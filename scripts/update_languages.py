@@ -75,26 +75,23 @@ def render(data, theme):
     for i, item in enumerate(items):
         color = COLORS.get(item['name'], COLORS['Other'])[int(dark)]
         width = 616 * item['percent'] / 100
-        bars.append(f'<rect x="{x:.5f}" y="100" width="{width:.5f}" height="14" fill="{color}"/>')
+        bars.append(f'<rect x="{x:.5f}" y="76" width="{width:.5f}" height="14" fill="{color}"/>')
         x += width
         col, row = divmod(i, 3)
-        left, y = 32 + col * 326, 157 + row * 38
+        left, y = 32 + col * 326, 125 + row * 38
         percent = f"{item['percent']:.2f}%" if item['percent'] >= .01 else '<0.01%'
-        legend.append(f'<circle cx="{left+5}" cy="{y-5}" r="5" fill="{color}"/><text x="{left+22}" y="{y}" fill="{fg}" font-size="16">{html.escape(item["name"])}</text><text x="{left+274}" y="{y}" text-anchor="end" fill="{muted}" font-size="15" class="number">{html.escape(percent)}</text>')
+        legend.append(f'<circle cx="{left+5}" cy="{y-5}" r="5" fill="{color}"/><text x="{left+22}" y="{y}" fill="{fg}" font-size="16">{html.escape(item["name"])}</text><text x="{left+290}" y="{y}" text-anchor="end" fill="{muted}" font-size="15" class="number">{html.escape(percent)}</text>')
     summary = '; '.join(f'{item["name"]}: {item["percent"]:.2f}%' for item in items)
     other_names = ', '.join(item['name'] for item in others) or 'none'
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="680" height="294" viewBox="0 0 680 294" role="img" aria-labelledby="title desc">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="680" height="232" viewBox="0 0 680 232" role="img" aria-labelledby="title desc">
 <title id="title">Most used languages — rs-an</title>
 <desc id="desc">{html.escape(summary)}. Share of code bytes in public repositories, excluding forks, fetched {data['updated_on']}. Other includes {html.escape(other_names)}. Percentages rounded.</desc>
 <style>text{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}}.number{{font-variant-numeric:tabular-nums}}</style>
-<defs><clipPath id="bar"><rect x="32" y="100" width="616" height="14" rx="7"/></clipPath></defs>
-<rect width="680" height="294" fill="{bg}"/>
+<defs><clipPath id="bar"><rect x="32" y="76" width="616" height="14" rx="7"/></clipPath></defs>
+<rect width="680" height="232" fill="{bg}"/>
 <text x="32" y="48" fill="{accent}" font-size="25" font-weight="650">Most used languages</text>
-<text x="32" y="72" fill="{muted}" font-size="11" letter-spacing="1.5">A LITTLE OF WHAT I BUILD WITH</text>
 <g clip-path="url(#bar)">{''.join(bars)}</g>
 {''.join(legend)}
-<text x="32" y="269" fill="{muted}" font-size="11">Public code · excluding forks</text>
-<text x="648" y="269" text-anchor="end" fill="{muted}" font-size="11">rs-an</text>
 </svg>'''
 
 
