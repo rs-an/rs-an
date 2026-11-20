@@ -14,3 +14,10 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+<!-- language-cards:start -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/languages-compact-dark.svg" />
+  <img src="./assets/languages-compact-light.svg" alt="Most used languages — rs-an. Share of public code, excluding forks." width="680" />
+</picture>
+<!-- language-cards:end -->

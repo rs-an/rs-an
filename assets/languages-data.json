@@ -1,0 +1,97 @@
+{
+  "updated_on": "2026-11-20",
+  "total_bytes": 552235,
+  "repositories": [
+    {
+      "repo": "rs-an/DevNotes",
+      "languages": {
+        "Swift": 214345,
+        "Shell": 7859,
+        "Python": 1961
+      }
+    },
+    {
+      "repo": "rs-an/JSONic",
+      "languages": {
+        "Swift": 238284,
+        "Shell": 7644,
+        "Python": 1955,
+        "C": 21
+      }
+    },
+    {
+      "repo": "rs-an/download-speed-test",
+      "languages": {
+        "Python": 7860
+      }
+    },
+    {
+      "repo": "rs-an/employees_table_web_app",
+      "languages": {
+        "JavaScript": 24285,
+        "CSS": 9384,
+        "HTML": 5796,
+        "Dockerfile": 263
+      }
+    },
+    {
+      "repo": "rs-an/offer-flow-manager",
+      "languages": {
+        "Python": 15878,
+        "JavaScript": 9819,
+        "CSS": 6606,
+        "HTML": 275
+      }
+    },
+    {
+      "repo": "rs-an/rs-an",
+      "languages": {}
+    },
+    {
+      "repo": "rs-an/webar",
+      "languages": {}
+    }
+  ],
+  "languages": [
+    {
+      "name": "Swift",
+      "bytes": 452629,
+      "percent": 81.96311352956621
+    },
+    {
+      "name": "JavaScript",
+      "bytes": 34104,
+      "percent": 6.175631750975581
+    },
+    {
+      "name": "Python",
+      "bytes": 27654,
+      "percent": 5.007650728403669
+    },
+    {
+      "name": "CSS",
+      "bytes": 15990,
+      "percent": 2.895506442003857
+    },
+    {
+      "name": "Shell",
+      "bytes": 15503,
+      "percent": 2.807319347741451
+    },
+    {
+      "name": "HTML",
+      "bytes": 6071,
+      "percent": 1.0993508198502449
+    },
+    {
+      "name": "Dockerfile",
+      "bytes": 263,
+      "percent": 0.04762465254828108
+    },
+    {
+      "name": "C",
+      "bytes": 21,
+      "percent": 0.0038027289106992495
+    }
+  ]
+}
