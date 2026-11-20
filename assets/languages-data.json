@@ -1,6 +1,6 @@
 {
   "updated_on": "2026-11-20",
-  "total_bytes": 557146,
+  "total_bytes": 588461,
   "repositories": [
     {
       "repo": "rs-an/DevNotes",
@@ -8,6 +8,12 @@
         "Swift": 214345,
         "Shell": 7859,
         "Python": 1961
+      }
+    },
+    {
+      "repo": "rs-an/HueCue",
+      "languages": {
+        "Python": 29230
       }
     },
     {
@@ -46,7 +52,7 @@
     {
       "repo": "rs-an/rs-an",
       "languages": {
-        "Python": 4911
+        "Python": 6996
       }
     },
     {
@@ -58,49 +64,49 @@
     {
       "name": "Swift",
       "bytes": 452629,
-      "percent": 81.24064428354507,
+      "percent": 76.91741678717877,
       "color": "#F05138"
+    },
+    {
+      "name": "Python",
+      "bytes": 63880,
+      "percent": 10.855434769678874,
+      "color": "#3572A5"
     },
     {
       "name": "JavaScript",
       "bytes": 34104,
-      "percent": 6.121196239405829,
+      "percent": 5.79545628342405,
       "color": "#f1e05a"
-    },
-    {
-      "name": "Python",
-      "bytes": 32565,
-      "percent": 5.844967028391122,
-      "color": "#3572A5"
     },
     {
       "name": "CSS",
       "bytes": 15990,
-      "percent": 2.8699838103477364,
+      "percent": 2.717257388340094,
       "color": "#663399"
     },
     {
       "name": "Shell",
       "bytes": 15503,
-      "percent": 2.7825740470181963,
+      "percent": 2.634499142678954,
       "color": "#89e051"
     },
     {
       "name": "HTML",
       "bytes": 6071,
-      "percent": 1.0896605198637341,
+      "percent": 1.0316741466299382,
       "color": "#e34c26"
     },
     {
       "name": "Dockerfile",
       "bytes": 263,
-      "percent": 0.047204861921291724,
+      "percent": 0.04469285135293588,
       "color": "#384d54"
     },
     {
       "name": "C",
       "bytes": 21,
-      "percent": 0.0037692095070232935,
+      "percent": 0.0035686307163941195,
       "color": "#555555"
     }
   ]
