@@ -2,6 +2,7 @@
 import html
 import json
 import os
+import re
 import time
 from collections import Counter
 from datetime import datetime, timezone
@@ -11,25 +12,51 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 OWNER = 'rs-an'
-COLORS = {
-    'Swift': ('#F05138', '#F05138'),
-    'JavaScript': ('#f1e05a', '#f1e05a'),
-    'Python': ('#3572A5', '#3572A5'),
-    'CSS': ('#663399', '#663399'),
-    'Shell': ('#89e051', '#89e051'),
-    'HTML': ('#e34c26', '#e34c26'),
-    'Other': ('#a1a9bc', '#8796b2'),
-}
+REPOSITORIES_QUERY = '''query($login: String!, $after: String) {
+  user(login: $login) {
+    repositories(first: 100, after: $after, ownerAffiliations: [OWNER],
+                 isFork: false, privacy: PUBLIC) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        id nameWithOwner
+        languages(first: 100) {
+          pageInfo { hasNextPage endCursor }
+          edges { size node { name color } }
+        }
+      }
+    }
+  }
+}'''
+LANGUAGES_QUERY = '''query($id: ID!, $after: String) {
+  node(id: $id) {
+    ... on Repository {
+      languages(first: 100, after: $after) {
+        pageInfo { hasNextPage endCursor }
+        edges { size node { name color } }
+      }
+    }
+  }
+}'''
 
 
-def api(path):
-    headers = {'User-Agent': 'rs-an-profile', 'Accept': 'application/vnd.github+json'}
-    if os.environ.get('GH_TOKEN'):
-        headers['Authorization'] = 'Bearer ' + os.environ['GH_TOKEN']
+def graphql(query, variables):
+    token = os.environ.get('GH_TOKEN')
+    if not token:
+        raise RuntimeError('GH_TOKEN is required; Actions supplies github.token automatically.')
+    headers = {'User-Agent': 'rs-an-profile', 'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + token}
+    payload = json.dumps({'query': query, 'variables': variables}).encode()
     for attempt in range(3):
         try:
-            with urlopen(Request('https://api.github.com/' + path, headers=headers), timeout=30) as response:
-                return json.load(response)
+            with urlopen(Request('https://api.github.com/graphql', data=payload,
+                                 headers=headers), timeout=30) as response:
+                result = json.load(response)
+            if result.get('errors'):
+                raise RuntimeError('GitHub GraphQL failed: ' + '; '.join(
+                    error.get('message', 'Unknown error') for error in result['errors']))
+            if not result.get('data'):
+                raise RuntimeError('GitHub returned no data; existing cards are preserved.')
+            return result['data']
         except HTTPError as exc:
             if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
                 raise
@@ -37,20 +64,34 @@ def api(path):
 
 
 def collect():
-    totals = Counter()
-    repositories = []
-    page = 1
+    totals, colors, repositories = Counter(), {}, []
+    cursor = None
     while True:
-        batch = api(f'users/{OWNER}/repos?type=owner&per_page=100&page={page}')
-        for repo in batch:
-            if repo['fork'] or repo['private']:
-                continue
-            languages = api(f'repos/{repo["full_name"]}/languages')
+        result = graphql(REPOSITORIES_QUERY, {'login': OWNER, 'after': cursor})
+        if not result.get('user'):
+            raise RuntimeError('GitHub user not found; existing cards are preserved.')
+        batch = result['user']['repositories']
+        for repo in batch['nodes']:
+            languages = {}
+            connection = repo['languages']
+            while True:
+                for edge in connection['edges']:
+                    language = edge['node']
+                    name, color = language['name'], language['color']
+                    if color is not None and not re.fullmatch(r'#[0-9a-fA-F]{6}', color):
+                        raise RuntimeError(f'Invalid GitHub color for {name}')
+                    languages[name] = edge['size']
+                    colors[name] = color
+                if not connection['pageInfo']['hasNextPage']:
+                    break
+                connection = graphql(LANGUAGES_QUERY, {
+                    'id': repo['id'], 'after': connection['pageInfo']['endCursor']
+                })['node']['languages']
             totals.update(languages)
-            repositories.append({'repo': repo['full_name'], 'languages': languages})
-        if len(batch) < 100:
+            repositories.append({'repo': repo['nameWithOwner'], 'languages': languages})
+        if not batch['pageInfo']['hasNextPage']:
             break
-        page += 1
+        cursor = batch['pageInfo']['endCursor']
     total = sum(totals.values())
     if not total:
         raise RuntimeError('No language data returned; existing cards are preserved.')
@@ -58,7 +99,8 @@ def collect():
         'updated_on': datetime.now(timezone.utc).date().isoformat(),
         'total_bytes': total,
         'repositories': sorted(repositories, key=lambda r: r['repo']),
-        'languages': [{'name': name, 'bytes': count, 'percent': 100 * count / total}
+        'languages': [{'name': name, 'bytes': count, 'percent': 100 * count / total,
+                       'color': colors[name]}
                       for name, count in sorted(totals.items(), key=lambda p: (-p[1], p[0]))],
     }
 
@@ -73,7 +115,7 @@ def render(data, theme):
     bars, legend = [], []
     x = 32.0
     for i, item in enumerate(items):
-        color = COLORS.get(item['name'], COLORS['Other'])[int(dark)]
+        color = item.get('color') or ('#8796b2' if dark else '#a1a9bc')
         outline = '#' + ''.join(f'{round(int(color[j:j+2], 16) * 0.85):02x}' for j in (1, 3, 5))
         width = 616 * item['percent'] / 100
         bars.append(f'<rect x="{x:.5f}" y="76" width="{width:.5f}" height="14" fill="{color}"/>')
