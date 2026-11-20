@@ -74,13 +74,14 @@ def render(data, theme):
     x = 32.0
     for i, item in enumerate(items):
         color = COLORS.get(item['name'], COLORS['Other'])[int(dark)]
+        outline = '#' + ''.join(f'{round(int(color[j:j+2], 16) * 0.85):02x}' for j in (1, 3, 5))
         width = 616 * item['percent'] / 100
         bars.append(f'<rect x="{x:.5f}" y="76" width="{width:.5f}" height="14" fill="{color}"/>')
         x += width
         col, row = divmod(i, 3)
         left, y = 32 + col * 326, 125 + row * 38
         percent = f"{item['percent']:.2f}%" if item['percent'] >= .01 else '<0.01%'
-        legend.append(f'<circle cx="{left+5}" cy="{y-5}" r="5" fill="{color}"/><text x="{left+22}" y="{y}" fill="{fg}" font-size="16">{html.escape(item["name"])}</text><text x="{left+290}" y="{y}" text-anchor="end" fill="{muted}" font-size="15" class="number">{html.escape(percent)}</text>')
+        legend.append(f'<circle cx="{left+5}" cy="{y-5}" r="4.5" fill="{color}" stroke="{outline}" stroke-width="1"/><text x="{left+22}" y="{y}" fill="{fg}" font-size="16">{html.escape(item["name"])}</text><text x="{left+290}" y="{y}" text-anchor="end" fill="{muted}" font-size="15" class="number">{html.escape(percent)}</text>')
     summary = '; '.join(f'{item["name"]}: {item["percent"]:.2f}%' for item in items)
     other_names = ', '.join(item['name'] for item in others) or 'none'
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="680" height="232" viewBox="0 0 680 232" role="img" aria-labelledby="title desc">
