@@ -17,7 +17,7 @@ Here are some ideas to get you started:
 
 <!-- language-cards:start -->
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/languages-compact-dark.svg" />
-  <img src="./assets/languages-compact-light.svg" alt="Most used languages — rs-an. Share of public code, excluding forks." width="680" />
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/languages-compact-dark.svg?v=github-colors-2" />
+  <img src="./assets/languages-compact-light.svg?v=github-colors-2" alt="Most used languages — rs-an. Share of public code, excluding forks." width="680" />
 </picture>
 <!-- language-cards:end -->
