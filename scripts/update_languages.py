@@ -131,11 +131,9 @@ def render(data, theme=None):
 <desc id="desc">{html.escape(summary)}. Share of code bytes in public repositories, excluding forks, fetched {data['updated_on']}. Other includes {html.escape(other_names)}. Percentages rounded.</desc>
 <style>text{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}}.number{{font-variant-numeric:tabular-nums}}</style>
 <defs>
-<linearGradient id="holo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B45FF"/><stop offset=".32" stop-color="#26B8F5"/><stop offset=".62" stop-color="#25D7B3"/><stop offset="1" stop-color="#F16ABA"/></linearGradient>
-<filter id="glow" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<linearGradient id="holo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A38ACB"/><stop offset="1" stop-color="#54BEB6"/></linearGradient>
 <clipPath id="bar"><rect x="32" y="76" width="616" height="14" rx="7"/></clipPath></defs>
-<rect x="8" y="8" width="688" height="240" rx="18" fill="none" stroke="url(#holo)" stroke-width="3" opacity=".35" filter="url(#glow)"/>
-<rect x="8" y="8" width="688" height="240" rx="18" fill="none" stroke="url(#holo)" stroke-width="1.8"/>
+<rect x="8" y="8" width="688" height="240" rx="18" fill="none" stroke="url(#holo)" stroke-width="1"/>
 <g transform="translate(12 12)">
 <text x="32" y="48" fill="{accent}" font-size="25" font-weight="650">Most used languages</text>
 <g clip-path="url(#bar)">{''.join(bars)}</g>
