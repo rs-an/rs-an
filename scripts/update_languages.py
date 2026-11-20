@@ -105,9 +105,9 @@ def collect():
     }
 
 
-def render(data, theme):
-    dark = theme == 'dark'
-    bg, fg, muted, accent = ('#0d1117', '#e6e5f0', '#969cb0', '#bba8e7') if dark else ('#ffffff', '#303348', '#72758a', '#7860b5')
+def render(data, theme=None):
+    fg = muted = '#808080'
+    accent = '#9476C4'
     items = list(data['languages'][:5])
     others = data['languages'][5:]
     if others:
@@ -115,8 +115,8 @@ def render(data, theme):
     bars, legend = [], []
     x = 32.0
     for i, item in enumerate(items):
-        color = item.get('color') or ('#8796b2' if dark else '#a1a9bc')
-        outline = '#ffffff' if dark else '#1f2328'
+        color = item.get('color') or '#a1a9bc'
+        outline = '#1f2328'
         width = 616 * item['percent'] / 100
         bars.append(f'<rect x="{x:.5f}" y="76" width="{width:.5f}" height="14" fill="{color}"/>')
         x += width
@@ -126,21 +126,27 @@ def render(data, theme):
         legend.append(f'<circle cx="{left+6}" cy="{y-5}" r="5.5" fill="{color}" stroke="{outline}" stroke-opacity="0.15" stroke-width="1"/><text x="{left+22}" y="{y}" fill="{fg}" font-size="16">{html.escape(item["name"])}</text><text x="{left+290}" y="{y}" text-anchor="end" fill="{muted}" font-size="15" class="number">{html.escape(percent)}</text>')
     summary = '; '.join(f'{item["name"]}: {item["percent"]:.2f}%' for item in items)
     other_names = ', '.join(item['name'] for item in others) or 'none'
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="680" height="232" viewBox="0 0 680 232" role="img" aria-labelledby="title desc">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="704" height="256" viewBox="0 0 704 256" role="img" aria-labelledby="title desc">
 <title id="title">Most used languages — rs-an</title>
 <desc id="desc">{html.escape(summary)}. Share of code bytes in public repositories, excluding forks, fetched {data['updated_on']}. Other includes {html.escape(other_names)}. Percentages rounded.</desc>
 <style>text{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}}.number{{font-variant-numeric:tabular-nums}}</style>
-<defs><clipPath id="bar"><rect x="32" y="76" width="616" height="14" rx="7"/></clipPath></defs>
-<rect width="680" height="232" fill="{bg}"/>
+<defs>
+<linearGradient id="holo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B45FF"/><stop offset=".32" stop-color="#26B8F5"/><stop offset=".62" stop-color="#25D7B3"/><stop offset="1" stop-color="#F16ABA"/></linearGradient>
+<filter id="glow" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<clipPath id="bar"><rect x="32" y="76" width="616" height="14" rx="7"/></clipPath></defs>
+<rect x="8" y="8" width="688" height="240" rx="18" fill="none" stroke="url(#holo)" stroke-width="3" opacity=".35" filter="url(#glow)"/>
+<rect x="8" y="8" width="688" height="240" rx="18" fill="none" stroke="url(#holo)" stroke-width="1.8"/>
+<g transform="translate(12 12)">
 <text x="32" y="48" fill="{accent}" font-size="25" font-weight="650">Most used languages</text>
 <g clip-path="url(#bar)">{''.join(bars)}</g>
 {''.join(legend)}
-</svg>'''
+</g></svg>'''
 
 
 def main():
     data = collect()
     outputs = {f'languages-compact-{theme}.svg': render(data, theme) for theme in ('light', 'dark')}
+    outputs['languages-compact.svg'] = render(data)
     outputs['languages-data.json'] = json.dumps(data, ensure_ascii=False, indent=2) + '\n'
     folder = ROOT / 'assets'
     folder.mkdir(exist_ok=True)
