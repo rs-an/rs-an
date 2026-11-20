@@ -12,12 +12,12 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 OWNER = 'rs-an'
 COLORS = {
-    'Swift': ('#9670df', '#b18af0'),
-    'JavaScript': ('#e8bb16', '#f2d34f'),
-    'Python': ('#2685d3', '#51a9f5'),
-    'CSS': ('#e34888', '#fa70aa'),
-    'Shell': ('#17a887', '#37d5ae'),
-    'HTML': ('#e46a33', '#fa985d'),
+    'Swift': ('#F05138', '#F05138'),
+    'JavaScript': ('#f1e05a', '#f1e05a'),
+    'Python': ('#3572A5', '#3572A5'),
+    'CSS': ('#663399', '#663399'),
+    'Shell': ('#89e051', '#89e051'),
+    'HTML': ('#e34c26', '#e34c26'),
     'Other': ('#a1a9bc', '#8796b2'),
 }
 
