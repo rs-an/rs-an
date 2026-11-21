@@ -14,5 +14,5 @@ Here are some ideas to get you started:
 -->
 
 <!-- language-cards:start -->
-<img src="./assets/languages-compact.svg?v=soft-border-2" alt="Most used languages — rs-an. Share of public code, excluding forks." width="704" />
+<img src="./assets/languages-compact.svg?v=borderless-3" alt="Most used languages — rs-an. Share of public code, excluding forks." width="704" />
 <!-- language-cards:end -->

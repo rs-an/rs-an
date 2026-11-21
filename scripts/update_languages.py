@@ -131,9 +131,7 @@ def render(data, theme=None):
 <desc id="desc">{html.escape(summary)}. Share of code bytes in public repositories, excluding forks, fetched {data['updated_on']}. Other includes {html.escape(other_names)}. Percentages rounded.</desc>
 <style>text{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}}.number{{font-variant-numeric:tabular-nums}}</style>
 <defs>
-<linearGradient id="holo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A38ACB"/><stop offset="1" stop-color="#54BEB6"/></linearGradient>
 <clipPath id="bar"><rect x="32" y="76" width="616" height="14" rx="7"/></clipPath></defs>
-<rect x="8" y="8" width="688" height="240" rx="18" fill="none" stroke="url(#holo)" stroke-width="1"/>
 <g transform="translate(12 12)">
 <text x="32" y="48" fill="{accent}" font-size="25" font-weight="650">Most used languages</text>
 <g clip-path="url(#bar)">{''.join(bars)}</g>
